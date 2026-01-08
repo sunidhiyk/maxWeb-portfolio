@@ -3,10 +3,10 @@ import React from 'react';
 const About = () => {
     return (
         <section id="about" className="section">
-            <h2 className="section-heading" style={{ display: 'flex', alignItems: 'center', position: 'relative', margin: '10px 0 40px', width: '100%', fontSize: 'clamp(26px, 5vw, 32px)', whiteSpace: 'nowrap' }}>
-                <span style={{ color: 'var(--green)', fontFamily: 'var(--font-mono)', fontSize: 'var(--fz-md)', marginRight: '10px' }}>01.</span>
+            <h2 className="section-heading">
+                <span className="section-number">01.</span>
                 About Us
-                <span style={{ display: 'block', height: '1px', width: '300px', backgroundColor: 'var(--lightest-navy)', marginLeft: '20px' }}></span>
+                <span className="section-line"></span>
             </h2>
 
             <div style={{ maxWidth: '900px' }}>
@@ -19,7 +19,7 @@ const About = () => {
                     </p>
                     <p>Here are a few technologies we've been working with recently:</p>
                     <ul style={{ display: 'grid', gridTemplateColumns: 'minmax(140px, 1fr) minmax(140px, 1fr)', padding: 0, margin: '20px 0 0 0', overflow: 'hidden', listStyle: 'none' }}>
-                        {['JavaScript (ES6+)', 'React', 'Node.js', 'TypeScript', 'Antigravity', 'WordPress'].map((tech, i) => (
+                        {['JavaScript (ES6+)', 'React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Figma', 'Git', 'WordPress'].map((tech, i) => (
                             <li key={i} style={{ position: 'relative', marginBottom: '10px', paddingLeft: '20px', fontFamily: 'var(--font-mono)', fontSize: 'var(--fz-xs)' }}>
                                 <span style={{ position: 'absolute', left: 0, color: 'var(--green)' }}>▹</span> {tech}
                             </li>

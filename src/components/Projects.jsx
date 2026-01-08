@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 const Projects = () => {
+    const scrollContainerRef = useRef(null);
+    // Pause state to stop auto-scroll when user interacts
+    const [isPaused, setIsPaused] = useState(false);
+
     const projects = [
         {
             title: 'N.E.R.D.S. Website',
@@ -33,109 +37,122 @@ const Projects = () => {
 
     ];
 
+    // Auto-scroll logic
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (!isPaused && scrollContainerRef.current) {
+                const container = scrollContainerRef.current;
+                const cardWidth = container.querySelector('.project-container')?.offsetWidth || 0;
+                const gap = 20; // from CSS
+                const scrollAmount = cardWidth + gap;
+
+                // If we are near the end, scroll back to start
+                if (container.scrollLeft + container.offsetWidth >= container.scrollWidth - 10) {
+                    container.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                }
+            }
+        }, 3500); // 3.5 seconds
+
+        return () => clearInterval(interval);
+    }, [isPaused]);
+
+    const scrollNext = () => {
+        if (scrollContainerRef.current) {
+            const container = scrollContainerRef.current;
+            const cardWidth = container.querySelector('.project-container')?.offsetWidth || 0;
+            container.scrollBy({ left: cardWidth + 20, behavior: 'smooth' });
+        }
+    };
+
+    const scrollPrev = () => {
+        if (scrollContainerRef.current) {
+            const container = scrollContainerRef.current;
+            const cardWidth = container.querySelector('.project-container')?.offsetWidth || 0;
+            container.scrollBy({ left: -(cardWidth + 20), behavior: 'smooth' });
+        }
+    };
+
     return (
         <section id="projects" className="section">
-            <h2 className="section-heading" style={{ display: 'flex', alignItems: 'center', position: 'relative', margin: '10px 0 40px', width: '100%', fontSize: 'clamp(26px, 5vw, 32px)', whiteSpace: 'nowrap' }}>
-                <span style={{ color: 'var(--green)', fontFamily: 'var(--font-mono)', fontSize: 'var(--fz-md)', marginRight: '10px' }}>02.</span>
+            <h2 className="section-heading">
+                <span className="section-number">02.</span>
                 Some Things We've Built
-                <span style={{ display: 'block', height: '1px', width: '300px', backgroundColor: 'var(--lightest-navy)', marginLeft: '20px' }}></span>
+                <span className="section-line"></span>
             </h2>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '100px' }}>
-                {projects.map((project, i) => (
-                    <div key={i} style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(12, 1fr)',
-                        alignItems: 'center',
-                        gap: '10px'
-                    }}>
-                        <div style={{
-                            gridColumn: i % 2 !== 0 ? '1 / 8' : '6 / -1',
-                            gridRow: '1 / -1',
-                            position: 'relative',
-                            zIndex: 1,
-                            // Specific styles for having an image vs placeholder
-                            height: project.image ? 'auto' : '360px',
-                            backgroundColor: project.image ? 'transparent' : 'var(--light-navy)',
-                            border: project.image ? 'none' : '1px solid var(--green)',
-                            borderRadius: 'var(--border-radius)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}>
-                            {project.image ? (
-                                <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ width: '100%', display: 'block' }}>
-                                    <img
-                                        src={project.image}
-                                        alt={project.title}
-                                        style={{
+            {/* Container wrapper for relative positioning of arrows */}
+            <div style={{ position: 'relative' }}>
+                <div
+                    className="projects-grid"
+                    ref={scrollContainerRef}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                    onTouchStart={() => setIsPaused(true)} // Pause on touch
+                    onTouchEnd={() => {
+                        // Optional: Resume after a delay, or just let it stay paused until next view
+                        setTimeout(() => setIsPaused(false), 5000);
+                    }}
+                >
+                    {projects.map((project, i) => (
+                        <div key={i} className="project-container">
+                            <div className={`project-image-wrapper ${i % 2 !== 0 ? 'alternate' : ''}`}>
+                                <a href={project.link} target="_blank" rel="noopener noreferrer">
+                                    {project.image ? (
+                                        <img
+                                            src={project.image}
+                                            alt={project.title}
+                                            className="project-img"
+                                        />
+                                    ) : ( // simplified placeholder logic
+                                        <div style={{
+                                            height: '100%',
                                             width: '100%',
-                                            height: 'auto',
-                                            borderRadius: 'var(--border-radius)',
-                                            border: '1px solid var(--green)',
-                                            filter: 'grayscale(100%) contrast(1) brightness(90%)',
-                                            transition: 'var(--transition)',
-                                            cursor: project.link ? 'pointer' : 'default',
-                                            display: 'block' // Removes bottom space in anchor
-                                        }}
-                                        onMouseEnter={(e) => e.target.style.filter = 'none'}
-                                        onMouseLeave={(e) => e.target.style.filter = 'grayscale(100%) contrast(1) brightness(90%)'}
-                                    />
-                                </a>
-                            ) : (
-                                <div style={{ color: 'var(--light-slate)' }}>Placeholder Project Image</div>
-                            )}
-                        </div>
-
-                        <div style={{
-                            gridColumn: i % 2 !== 0 ? '7 / -1' : '1 / 7',
-                            gridRow: '1 / -1',
-                            zIndex: 2,
-                            textAlign: i % 2 !== 0 ? 'right' : 'left',
-                            pointerEvents: 'none' // Allow clicks to pass through to image where not blocked by text
-                        }}>
-                            <div style={{ pointerEvents: 'auto' }}>
-                                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--fz-xs)', color: 'var(--green)' }}>Featured Project</p>
-                                <h3 style={{ fontSize: 'clamp(24px, 5vw, 28px)', color: 'var(--lightest-slate)' }}>
-                                    <a href={project.link} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>{project.title}</a>
-                                </h3>
-                                <div style={{
-                                    backgroundColor: 'var(--light-navy)',
-                                    padding: '25px',
-                                    borderRadius: 'var(--border-radius)',
-                                    boxShadow: '0 10px 30px -15px var(--navy-shadow)',
-                                    margin: '20px 0',
-                                    textAlign: 'left'
-                                }}>
-                                    <p>{project.description}</p>
-                                </div>
-                                <ul style={{
-                                    display: 'flex',
-                                    justifyContent: i % 2 !== 0 ? 'flex-end' : 'flex-start',
-                                    gap: '20px',
-                                    listStyle: 'none',
-                                    fontFamily: 'var(--font-mono)',
-                                    fontSize: 'var(--fz-xs)',
-                                    color: 'var(--light-slate)'
-                                }}>
-                                    {project.tech.map((t, idx) => <li key={idx}>{t}</li>)}
-                                </ul>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: i % 2 !== 0 ? 'flex-end' : 'flex-start',
-                                    gap: '20px',
-                                    marginTop: '20px'
-                                }}>
-                                    {project.link && (
-                                        <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label="External Link">
-                                            <span style={{ color: 'var(--green)' }}>External Link ↗</span>
-                                        </a>
+                                            backgroundColor: 'var(--light-navy)',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            borderRadius: 'var(--border-radius)'
+                                        }}>
+                                            <span style={{ color: 'var(--light-slate)' }}>Placeholder</span>
+                                        </div>
                                     )}
+                                </a>
+                            </div>
+
+                            <div className={`project-content ${i % 2 !== 0 ? 'alternate' : ''}`}>
+                                <div>
+                                    <p className="project-overline">Featured Project</p>
+                                    <h3 className="project-title">
+                                        <a href={project.link} target="_blank" rel="noopener noreferrer">{project.title}</a>
+                                    </h3>
+                                    <div className="project-description">
+                                        <p>{project.description}</p>
+                                    </div>
+                                    <ul className="project-tech-list">
+                                        {project.tech.map((t, idx) => <li key={idx}>{t}</li>)}
+                                    </ul>
+                                    <div className="project-links">
+                                        {project.link && (
+                                            <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label="External Link">
+                                                <span style={{ color: 'var(--green)' }}>External Link ↗</span>
+                                            </a>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
+
+                {/* Mobile Arrows */}
+                <button className="slider-arrow prev" onClick={scrollPrev} aria-label="Previous Project">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+                </button>
+                <button className="slider-arrow next" onClick={scrollNext} aria-label="Next Project">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+                </button>
             </div>
         </section>
     );
