@@ -4,6 +4,7 @@ const Contact = () => {
     // STATE: Form data and submission status
     const [formData, setFormData] = useState({
         name: '',
+        email: '',
         message: ''
     });
     const [status, setStatus] = useState(''); // '', 'submitting', 'success', 'error'
@@ -31,6 +32,7 @@ const Contact = () => {
                 },
                 body: JSON.stringify({
                     name: formData.name,
+                    email: formData.email,
                     message: formData.message,
                     _replyto: 'maxweb596@gmail.com' // Optional: sets reply-to field if supported
                 })
@@ -38,7 +40,7 @@ const Contact = () => {
 
             if (response.ok) {
                 setStatus('success');
-                setFormData({ name: '', message: '' });
+                setFormData({ name: '', email: '', message: '' });
             } else {
                 setStatus('error');
             }
@@ -62,9 +64,28 @@ const Contact = () => {
                     color: 'var(--green)',
                     borderRadius: 'var(--border-radius)',
                     maxWidth: '500px',
-                    margin: '0 auto'
+                    margin: '0 auto',
+                    textAlign: 'center'
                 }}>
-                    <p style={{ margin: 0 }}>Thanks for your message! We'll get back to you soon.</p>
+                    <p style={{ margin: '0 0 20px 0' }}>Thanks for your message! We'll get back to you soon.</p>
+                    <button
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        style={{
+                            color: 'var(--green)',
+                            backgroundColor: 'transparent',
+                            border: '1px solid var(--green)',
+                            borderRadius: 'var(--border-radius)',
+                            padding: '0.75rem 1rem',
+                            fontSize: 'var(--fz-xs)',
+                            fontFamily: 'var(--font-mono)',
+                            lineHeight: '1',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            transition: 'var(--transition)'
+                        }}
+                    >
+                        Back to Top
+                    </button>
                 </div>
             ) : (
                 <form onSubmit={handleSubmit} style={{ maxWidth: '500px', margin: '0 auto', textAlign: 'left' }}>
@@ -80,6 +101,33 @@ const Contact = () => {
                             id="name"
                             name="name"
                             value={formData.name}
+                            onChange={handleChange}
+                            required
+                            disabled={status === 'submitting'}
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                backgroundColor: 'var(--light-navy)',
+                                border: '1px solid var(--lightest-navy)',
+                                borderRadius: 'var(--border-radius)',
+                                color: 'var(--slate)',
+                                marginBottom: '10px'
+                            }}
+                        />
+                    </div>
+
+                    <div style={{ marginBottom: '20px' }}>
+                        <label
+                            htmlFor="email"
+                            style={{ display: 'block', color: 'var(--green)', fontFamily: 'var(--font-mono)', fontSize: 'var(--fz-xs)', marginBottom: '10px' }}
+                        >
+                            Your Email
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
                             onChange={handleChange}
                             required
                             disabled={status === 'submitting'}

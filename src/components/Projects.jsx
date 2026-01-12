@@ -40,6 +40,9 @@ const Projects = () => {
     // Auto-scroll logic
     useEffect(() => {
         const interval = setInterval(() => {
+            // Check for mobile view to prevent auto-scrolling
+            if (window.innerWidth <= 768) return;
+
             if (!isPaused && scrollContainerRef.current) {
                 const container = scrollContainerRef.current;
                 const cardWidth = container.querySelector('.project-container')?.offsetWidth || 0;
@@ -146,6 +149,7 @@ const Projects = () => {
                     ))}
                 </div>
 
+                {/* Mobile Arrows */}
                 {/* Mobile Arrows */}
                 <button className="slider-arrow prev" onClick={scrollPrev} aria-label="Previous Project">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
