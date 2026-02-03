@@ -17,7 +17,7 @@ const Projects = () => {
             title: 'BaruahEPC',
             description: 'A professional corporate website for an EPC (Engineering, Procurement, and Construction) company. It showcases large-scale infrastructure projects, services, and company capabilities with a clean, industrial aesthetic.',
             tech: ['React', 'Tailwind CSS', 'Vercel'],
-            link: 'https://baruah-epc.vercel.app/',
+            link: 'https://www.baruahgroup.com/',
             image: '/assets/baruah-epc.png'
         },
         {
