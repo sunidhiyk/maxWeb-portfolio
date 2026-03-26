@@ -7,7 +7,7 @@ const Projects = () => {
 
     const projects = [
         {
-            title: 'arkhe.site',
+            title: 'arkheai.site',
             description: 'Arkheai.site is an AI platform that enables users to create intelligent agents for automating repetitive tasks and improving workflow efficiency, helping individuals and teams focus on more meaningful work.',
             tech: ['Claude Code', 'Vite', 'LLM'],
             link: 'https://arkhe.site/',
