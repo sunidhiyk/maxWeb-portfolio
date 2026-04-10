@@ -14,10 +14,10 @@ const Projects = () => {
             image: '/assets/aabushan.jpeg'
         },
         {
-            title: 'arkhe.site',
+            title: 'ARKHE',
             description: 'Arkheai.site is an AI platform that enables users to create intelligent agents for automating repetitive tasks and improving workflow efficiency, helping individuals and teams focus on more meaningful work.',
             tech: ['Claude Code', 'Vite', 'LLM'],
-            link: 'https://arkhe.site/',
+            link: 'https://arkheai.site/',
             image: '/assets/arkhe.png'
         },
         {
