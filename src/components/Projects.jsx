@@ -7,6 +7,13 @@ const Projects = () => {
 
     const projects = [
         {
+            title: 'Aabushan Jewellery',
+            description: 'A premium website for Aabushan, a fine jewellery brand. Crafted with an elegant design that reflects the luxury and artistry of traditional Indian jewellery — featuring smooth navigation, a curated gallery, and a seamless user experience.',
+            tech: ['Next.js', 'UI/UX'],
+            link: 'https://www.aabushan.in/',
+            image: '/assets/aabushan.jpeg'
+        },
+        {
             title: 'arkhe.site',
             description: 'Arkheai.site is an AI platform that enables users to create intelligent agents for automating repetitive tasks and improving workflow efficiency, helping individuals and teams focus on more meaningful work.',
             tech: ['Claude Code', 'Vite', 'LLM'],
