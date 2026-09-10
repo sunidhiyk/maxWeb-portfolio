@@ -18,22 +18,45 @@ export default function Hero({ ready = false }) {
     const root = rootRef.current;
     if (!root || prefersReducedMotion()) return undefined;
 
+    let tl = null;
+
     const ctx = gsap.context(() => {
-      // Pre-animation state, set synchronously so nothing flashes composed.
-      gsap.set('.hero-line-i', { yPercent: 110 });
+      // Pre-animation state. Nothing in CSS hides these, so this is the only
+      // thing that ever does — and it runs before paint, so there is no flash
+      // of the composed layout.
+      // 130% rather than 110%: the mask is padded past the line box to stop it
+      // shaving the caps, and 110% left the tops of the letters peeking out
+      // below it whenever the reveal did not finish.
+      gsap.set('.hero-line-i', { yPercent: 130 });
       gsap.set('.hero-stage', { opacity: 0, scale: 0.82 });
       gsap.set('.hero-meta-item', { opacity: 0, y: 18 });
 
       if (!ready) return;
 
-      gsap
+      tl = gsap
         .timeline({ defaults: { ease: 'expo.out' } })
         .to('.hero-line-i', { yPercent: 0, duration: 1.2, stagger: 0.09 }, 0)
         .to('.hero-stage', { opacity: 1, scale: 1, duration: 1.6 }, 0.4)
         .to('.hero-meta-item', { opacity: 1, y: 0, duration: 0.9, stagger: 0.09 }, 1.05);
     }, root);
 
-    return () => ctx.revert();
+    // The hero is the page's headline; it must never be left mid-reveal. If the
+    // timeline has not finished well past its own duration, drop the inline
+    // styles and show the composed state. This is a setTimeout on purpose —
+    // timers keep firing when requestAnimationFrame is throttled, which is
+    // precisely the situation that strands the animation.
+    const failsafe = window.setTimeout(() => {
+      if (!ready || (tl && tl.progress() === 1)) return;
+      gsap.set(
+        root.querySelectorAll('.hero-line-i, .hero-stage, .hero-meta-item'),
+        { clearProps: 'all' }
+      );
+    }, 4500);
+
+    return () => {
+      window.clearTimeout(failsafe);
+      ctx.revert();
+    };
   }, [ready]);
 
   // Scroll-out — the three lines leave at different rates and the stage dims.

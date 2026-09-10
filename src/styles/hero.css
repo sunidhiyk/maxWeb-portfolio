@@ -46,8 +46,8 @@
      0.09em top and bottom, so the mask has to be padded past that or it
      shaves the feet off the caps. The negative margin cancels the padding
      again to keep the three lines optically flush. */
-  padding-block: 0.18em;
-  margin-block: -0.18em;
+  padding-block: 0.22em;
+  margin-block: -0.22em;
   will-change: transform, opacity;
 }
 
@@ -62,10 +62,14 @@
   z-index: 1;
 }
 
+/* No hidden state here on purpose. The pre-intro offset is applied by Hero.jsx
+   in a useLayoutEffect — synchronously, before paint, so nothing flashes
+   composed — which means the words are only ever hidden by code that is about
+   to reveal them. Holding the offset in CSS instead made any failure of the
+   reveal (a stalled ticker, a throw, a stale bundle) permanently invisible. */
 .hero-line-i {
   display: block;
   will-change: transform;
-  transform: translate3d(0, 110%, 0); /* pre-intro state */
 }
 
 /* ---- 3D stage --------------------------------------------------------- */
@@ -82,8 +86,6 @@
   position: absolute;
   inset: var(--hero-top) 0 var(--hero-bottom);
   z-index: 2;
-  opacity: 0; /* pre-intro state */
-  transform: scale(0.82);
   pointer-events: none;
 }
 
@@ -113,8 +115,6 @@
 }
 
 .hero-meta-item {
-  opacity: 0; /* pre-intro state */
-  transform: translateY(18px);
   color: var(--ink-45);
 }
 
@@ -170,21 +170,10 @@
 
 /* ---- reduced motion: render the composed layout, nothing moves --------- */
 
+/* The type, stage and meta labels need no rescue here any more — nothing in
+   CSS hides them, and Hero.jsx skips arming the intro entirely under reduced
+   motion. Only the looping scroll rule is a real CSS animation. */
 @media (prefers-reduced-motion: reduce) {
-  .hero-line-i,
-  .hero-meta-item {
-    transform: none;
-  }
-
-  .hero-stage {
-    opacity: 1;
-    transform: none;
-  }
-
-  .hero-meta-item {
-    opacity: 1;
-  }
-
   .hero-scroll-rule {
     animation: none;
     transform: scaleY(1);
