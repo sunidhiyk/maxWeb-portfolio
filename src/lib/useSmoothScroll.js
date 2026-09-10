@@ -26,7 +26,16 @@ export function useSmoothScroll(enabled = true) {
 
     lenis.on('scroll', ScrollTrigger.update);
 
-    const update = (time) => lenis.raf(time * 1000);
+    // A throw inside a ticker callback can stop GSAP re-requesting frames,
+    // which kills every animation on the page for good. Never let Lenis take
+    // the ticker down with it.
+    const update = (time) => {
+      try {
+        lenis.raf(time * 1000);
+      } catch {
+        /* a dropped frame is survivable; a dead ticker is not */
+      }
+    };
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 

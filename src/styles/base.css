@@ -144,3 +144,51 @@ ol {
 .section-head .u-micro {
   margin-left: auto;
 }
+
+/* ---- stalled-motion fallback ------------------------------------------ *
+ * Set by App when GSAP's ticker never advances (a tab loaded in the
+ * background, an occluded window, rAF throttled by the OS). Entrance
+ * animations hold their targets hidden until they play, so without this the
+ * page renders as slivers of clipped type. GSAP writes inline styles, hence
+ * !important — this is the one place in the codebase that needs it.
+ * ---------------------------------------------------------------------- */
+
+.motion-stalled .hero-line-i,
+.motion-stalled .hero-meta-item,
+.motion-stalled .hero-stage,
+.motion-stalled .split-i,
+.motion-stalled .about-word,
+.motion-stalled .cap-row,
+.motion-stalled .footer-col,
+.motion-stalled .detail,
+.motion-stalled .work-panel__shift,
+.motion-stalled [data-work-reveal] {
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Colour is the animated property in the About statement, so it needs its own
+   reset — but the authored accent words keep their emphasis. */
+.motion-stalled .about-word {
+  color: var(--ink) !important;
+}
+
+.motion-stalled .about-word[data-accent] {
+  color: var(--accent) !important;
+}
+
+/* The preloader can only remove itself from its own exit tween, which by
+   definition never runs here. */
+.motion-stalled .pl {
+  display: none !important;
+}
+
+.motion-stalled .marquee-track {
+  transform: none !important;
+}
+
+.motion-stalled body,
+.motion-stalled .is-locked {
+  overflow: visible !important;
+}

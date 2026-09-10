@@ -22,4 +22,25 @@ export const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/**
+ * Entrance animations hide their targets first and reveal them on the ticker.
+ * If the ticker never advances — a tab loaded in the background, an occluded
+ * window, rAF throttled by the OS — those targets stay hidden forever and the
+ * page reads as broken. Watch for that and let the caller compose the page
+ * without motion. setTimeout keeps running when rAF does not, which is exactly
+ * why the check is built on it.
+ */
+export function watchTickerStall(onStall, ms = 2500) {
+  const startFrame = gsap.ticker.frame;
+  const id = setTimeout(() => {
+    if (gsap.ticker.frame === startFrame) onStall();
+  }, ms);
+  return () => clearTimeout(id);
+}
+
+/** Current ticker frame — a rising number means the ticker is alive. */
+export function tickerFrame() {
+  return gsap.ticker.frame;
+}
+
 export { gsap, ScrollTrigger };

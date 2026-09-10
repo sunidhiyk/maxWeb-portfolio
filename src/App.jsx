@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSmoothScroll } from './lib/useSmoothScroll';
-import { ScrollTrigger } from './lib/gsap';
+import { ScrollTrigger, tickerFrame, watchTickerStall } from './lib/gsap';
 
 import Preloader from './components/chrome/Preloader';
 import Nav from './components/chrome/Nav';
@@ -34,6 +34,41 @@ export default function App() {
     const id = window.setTimeout(() => setReady(true), 6000);
     return () => window.clearTimeout(id);
   }, [ready]);
+
+  // If GSAP's ticker never starts, every entrance animation is stuck holding
+  // its targets hidden. Compose the page flat instead of showing a broken one.
+  useEffect(() => {
+    const root = document.documentElement;
+    let unbindVisibility = () => {};
+
+    const stop = watchTickerStall(() => {
+      root.classList.add('motion-stalled');
+      setReady(true);
+
+      // The usual cause is a tab that loaded in the background. If the ticker
+      // starts once the tab is actually looked at, hand motion back rather
+      // than leaving the page flat for the rest of its life.
+      const onVisible = () => {
+        if (document.visibilityState !== 'visible') return;
+        const frame = tickerFrame();
+        window.setTimeout(() => {
+          if (tickerFrame() > frame) {
+            root.classList.remove('motion-stalled');
+            unbindVisibility();
+          }
+        }, 400);
+      };
+
+      document.addEventListener('visibilitychange', onVisible);
+      unbindVisibility = () =>
+        document.removeEventListener('visibilitychange', onVisible);
+    });
+
+    return () => {
+      stop();
+      unbindVisibility();
+    };
+  }, []);
 
   useSmoothScroll(ready);
 
