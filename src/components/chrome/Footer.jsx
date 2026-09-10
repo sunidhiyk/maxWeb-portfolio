@@ -31,7 +31,7 @@ export default function Footer() {
     return () => window.clearInterval(id);
   }, []);
 
-  // The wordmark rises out of the clipping band as the footer enters.
+  // The wordmark rises out of the masking band as the footer enters.
   useLayoutEffect(() => {
     const root = rootRef.current;
     const mark = markRef.current;
@@ -52,7 +52,14 @@ export default function Footer() {
           scrollTrigger: {
             trigger: root,
             start: 'top bottom',
-            end: 'top 40%',
+            // `bottom bottom` — the footer is the last thing on the page, so
+            // its bottom edge meets the viewport bottom exactly at maximum
+            // scroll; the reveal is therefore always reachable. An end keyed
+            // to the footer's *top* (e.g. `top 40%`) is not: whenever the
+            // footer is shorter than the distance that alignment demands, the
+            // page runs out of scroll first and the wordmark is left stranded
+            // mid-band, permanently cut in half.
+            end: 'bottom bottom',
             scrub: 0.6,
           },
         }

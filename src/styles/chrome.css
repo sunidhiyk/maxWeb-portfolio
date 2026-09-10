@@ -413,10 +413,15 @@ body.has-custom-cursor * {
   border-top: 1px solid var(--hair-invert);
 }
 
-/* the wordmark is cut by the band so only the upper ~70% of the caps show */
+/* The band is still a mask — the wordmark rises out of it on scroll — but it
+   is tall enough to hold the whole line, so the word reads in full once the
+   rise finishes. At line-height 0.86 the caps and the `b` ascender overflow
+   the line box by roughly 0.1em, hence the padding; the negative margin takes
+   that padding back out of the flow so the footer spacing is unchanged. */
 .footer-mark {
   overflow: hidden;
-  height: 0.52em;
+  padding-block: 0.12em;
+  margin-block: -0.12em;
   padding-inline: var(--gutter);
   font-size: var(--fs-mega);
   line-height: var(--lh-tight);
@@ -424,7 +429,6 @@ body.has-custom-cursor * {
 
 .footer-mark-i {
   display: block;
-  margin-top: -0.07em;
   font-weight: 700;
   letter-spacing: var(--track-mega);
   color: var(--ink-on-invert);
