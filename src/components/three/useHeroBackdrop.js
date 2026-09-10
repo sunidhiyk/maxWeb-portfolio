@@ -45,10 +45,10 @@ function paintBackdrop(target, host) {
   if (!ctx) return NOTHING_PAINTED;
 
   ctx.setTransform(scale, 0, 0, scale, 0, 0); // from here on, work in CSS pixels
-  ctx.fillStyle = token('--bg', '#e9e9e7');
+  ctx.fillStyle = token('--bg', '#ecf1de');
   ctx.fillRect(0, 0, rect.width, rect.height);
 
-  ctx.fillStyle = token('--ink', '#111111');
+  ctx.fillStyle = token('--ink', '#081910');
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
 

@@ -1,27 +1,72 @@
 /* ==========================================================================
    maxWeb — design tokens
-   Light editorial system: off-white canvas, near-black ink, violet accent.
+   Editorial system keyed to the four "Fallen Angels" stops:
+
+     #E42217  lava red    the accent — links, focus, section indices, rules
+     #A9ED3D  lemon lime  the light key: tinted up into the paper canvas,
+                          and the brightest mark on inverted grounds
+     #34CD3F  fresh green secondary accent, the one stop with real presence
+                          on the dark grounds where lava red goes flat
+     #081910  black bean  ink, and the deepest inverted ground
+
+   Four working values are derived from those four stops, each because no raw
+   stop could carry the role on its own; the reasoning sits with each one.
+
+   Every raw colour in the system lives in this block. Sections consume the
+   roles below, never the hexes, so the palette can be re-keyed from here.
    ========================================================================== */
 
 :root {
-  /* ---- surface ---- */
-  --bg: #e9e9e7;
-  --bg-raise: #f4f4f2;
-  --bg-invert: #0d0d0d;
-  --paper: #ffffff;
+  /* ---- palette (raw stops — reference these only to build roles) ---- */
+  --c-lava: #e42217;
+  --c-lime: #a9ed3d;
+  --c-fresh: #34cd3f;
+  --c-bean: #081910;
+
+  /* ---- derived stops ---- */
+  /* Lava red lands at 4.1:1 on the canvas — fine for a display line, short of
+     AA for the micro-labels and links the accent actually carries. One step
+     down the same hue clears 5:1 without reading as a different red. */
+  --c-lava-ink: #c81e13;
+  /* Lemon lime at full strength is a highlighter, not a text colour; a long
+     paragraph set in it buzzes. Pulled back toward paper it keeps the hue and
+     still holds 13:1 on black bean. */
+  --c-lime-key: #c7e58c;
+  /* Black bean lifted toward fresh green: the inverted ground the page lands
+     on, dark enough for lime type, warm enough not to read as flat black. */
+  --c-forest: #0e2e1a;
+  /* A mid green between fresh and forest, for the one element that has to
+     hold a single value across both grounds — see the cursor note at the
+     bottom of this file. */
+  --c-moss: #2e8c3b;
+
+  /* ---- surface ----
+     The canvas is lemon lime tinted far up toward paper. At full strength
+     #A9ED3D is a signal colour, not a page; held at this value it still reads
+     unmistakably green next to a white browser chrome. */
+  --bg: #ecf1de;
+  --bg-raise: #f4f7e9;
+  /* Forest is the inverted ground the page actually lands on; black bean is
+     held back for the preloader, so the entry opens at its darkest and lifts. */
+  --bg-invert: #0e2e1a;
+  --bg-invert-deep: #081910;
+  --paper: #fbfdf4;
 
   /* ---- ink ---- */
-  --ink: #111111;
-  --ink-70: rgba(17, 17, 17, 0.7);
-  --ink-45: rgba(17, 17, 17, 0.45);
-  --ink-25: rgba(17, 17, 17, 0.25);
-  --ink-12: rgba(17, 17, 17, 0.12);
-  --ink-on-invert: #e9e9e7;
+  --ink: #081910;
+  --ink-70: rgba(8, 25, 16, 0.7);
+  --ink-45: rgba(8, 25, 16, 0.45);
+  --ink-25: rgba(8, 25, 16, 0.25);
+  --ink-12: rgba(8, 25, 16, 0.12);
+  --ink-on-invert: #c7e58c;
 
-  /* ---- accent ---- */
-  --accent: #7671ff;
-  --accent-soft: #78b4ce;
-  --accent-12: rgba(118, 113, 255, 0.12);
+  /* ---- accent ----
+     `--accent` is tuned for the light canvas (5.0:1 on --bg). Inverted blocks
+     rebind it to fresh green below, so a component using var(--accent) stays
+     legible wherever it is dropped. */
+  --accent: #c81e13;
+  --accent-soft: #34cd3f;
+  --accent-12: rgba(200, 30, 19, 0.12);
 
   /* ---- type ---- */
   --font: 'Inter Tight', 'Inter Tight Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -110,4 +155,32 @@
     --dur: 0.01s;
     --dur-slow: 0.01s;
   }
+}
+
+/* ---- inverted grounds -----------------------------------------------------
+   Everything that flips to a dark ground rebinds the accent in one place.
+   Lava red is built for the light canvas and goes flat on forest (3.2:1);
+   fresh green clears 7:1 there while staying clearly quieter than the lime
+   type it sits beside, so a component written against var(--accent) survives
+   being dropped either way.
+   -------------------------------------------------------------------------- */
+
+.pl,
+.nav-overlay,
+.next,
+.footer,
+.work-band,
+.work-stack .work-panel__media {
+  --accent: var(--c-fresh);
+  --accent-12: rgba(52, 205, 63, 0.16);
+}
+
+/* The custom cursor is fixed to the viewport, so it crosses light and dark
+   grounds without ever being a child of either — it can't inherit the rebind
+   above and has to hold one value that works over both. Neither green in the
+   palette does that (fresh green is 1.9:1 on the canvas, lime worse), so the
+   ring takes a mid green sitting between them: 3.8:1 on paper, 3.4:1 on the
+   inverted bands. */
+.cursor {
+  --accent: var(--c-moss);
 }

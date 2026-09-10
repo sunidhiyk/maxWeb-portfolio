@@ -116,7 +116,10 @@ const FRAGMENT = /* glsl */ `
     float glint = pow(max(dot(R, normalize(vec3(-0.65, -0.1, 0.75))), 0.0), 60.0);
     col += vec3(1.0) * (spec * 0.55 + glint * 0.18);
 
-    col += vec3(0.20, 0.15, 0.42) * pow(grazing, 8.0); // brand violet fringe
+    // Lava red at half strength: the raw stop is far brighter than the indigo
+    // this replaced, and at full value the fringe stops reading as a fringe and
+    // starts looking like the tube is lit from inside.
+    col += vec3(0.45, 0.07, 0.05) * pow(grazing, 8.0); // brand lava fringe (#E42217)
 
     // A thin darkening right at the silhouette: without it the tube dissolves
     // into the page wherever the type behind happens to be light, and the knot
@@ -137,10 +140,10 @@ const FRAGMENT = /* glsl */ `
 `;
 
 function surfaceColor() {
-  if (typeof document === 'undefined') return new Vector3(0.914, 0.914, 0.906);
+  if (typeof document === 'undefined') return new Vector3(0.925, 0.945, 0.871);
   const raw = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
   const hex = /^#([0-9a-f]{6})$/i.exec(raw);
-  if (!hex) return new Vector3(0.914, 0.914, 0.906);
+  if (!hex) return new Vector3(0.925, 0.945, 0.871);
   const n = parseInt(hex[1], 16);
   return new Vector3(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
 }
