@@ -116,10 +116,11 @@ const FRAGMENT = /* glsl */ `
     float glint = pow(max(dot(R, normalize(vec3(-0.65, -0.1, 0.75))), 0.0), 60.0);
     col += vec3(1.0) * (spec * 0.55 + glint * 0.18);
 
-    // Lava red at half strength: the raw stop is far brighter than the indigo
-    // this replaced, and at full value the fringe stops reading as a fringe and
-    // starts looking like the tube is lit from inside.
-    col += vec3(0.45, 0.07, 0.05) * pow(grazing, 8.0); // brand lava fringe (#E42217)
+    // Pink at half strength. The fringe is additive and the page behind it is
+    // now black, so it carries much further than it did over a light canvas —
+    // at full value it stops reading as a fringe and the tube looks lit from
+    // inside.
+    col += vec3(0.50, 0.15, 0.33) * pow(grazing, 8.0); // brand pink fringe (#FF4BA7)
 
     // A thin darkening right at the silhouette: without it the tube dissolves
     // into the page wherever the type behind happens to be light, and the knot
@@ -140,10 +141,10 @@ const FRAGMENT = /* glsl */ `
 `;
 
 function surfaceColor() {
-  if (typeof document === 'undefined') return new Vector3(0.925, 0.945, 0.871);
+  if (typeof document === 'undefined') return new Vector3(0.0, 0.0, 0.0);
   const raw = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
   const hex = /^#([0-9a-f]{6})$/i.exec(raw);
-  if (!hex) return new Vector3(0.925, 0.945, 0.871);
+  if (!hex) return new Vector3(0.0, 0.0, 0.0);
   const n = parseInt(hex[1], 16);
   return new Vector3(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);
 }

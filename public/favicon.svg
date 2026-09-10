@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Ink field — black bean, the palette's deepest stop -->
-  <rect width="64" height="64" fill="#081910" />
-  <!-- Wordmark in lemon lime -->
+  <!-- Ink field — void, the ground the page opens and closes on -->
+  <rect width="64" height="64" fill="#000000" />
+  <!-- Wordmark in hot pink -->
   <text
     x="32"
     y="42"
@@ -9,9 +9,9 @@
     font-size="30"
     font-weight="700"
     letter-spacing="-1.6"
-    fill="#a9ed3d"
+    fill="#ff4ba7"
     text-anchor="middle"
   >mW</text>
-  <!-- Accent tick — lava red -->
-  <rect x="52" y="52" width="6" height="6" fill="#e42217" />
+  <!-- Accent tick — acid -->
+  <rect x="52" y="52" width="6" height="6" fill="#fff70d" />
 </svg>

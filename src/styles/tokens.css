@@ -1,16 +1,19 @@
 /* ==========================================================================
    maxWeb — design tokens
-   Editorial system keyed to the four "Fallen Angels" stops:
+   Palette sampled off donut-studio.com: a black page carrying saturated
+   full-bleed blocks, one hue to a section.
 
-     #E42217  lava red    the accent — links, focus, section indices, rules
-     #A9ED3D  lemon lime  the light key: tinted up into the paper canvas,
-                          and the brightest mark on inverted grounds
-     #34CD3F  fresh green secondary accent, the one stop with real presence
-                          on the dark grounds where lava red goes flat
-     #081910  black bean  ink, and the deepest inverted ground
+     #000000  void      the page ground, and the ink on every bright block
+     #FF4BA7  pink      the loudest block — the work band
+     #2D19F8  electric  the deep block, dark enough to carry bone type
+     #FFF70D  acid      the accent on dark grounds, and a block of its own
+     #FF4937  flame     the closing block, under the contact form
+     #FFFEF8  bone      type on void and electric
 
-   Four working values are derived from those four stops, each because no raw
-   stop could carry the role on its own; the reasoning sits with each one.
+   No hue here is legible on more than a couple of the others — bone on pink
+   is 3.1:1, void on electric is 2.6:1, acid on flame is 3.0:1 — so a ground
+   never travels alone. Each block at the bottom of this file rebinds its own
+   ink and accent together, with the ratio noted where it is set.
 
    Every raw colour in the system lives in this block. Sections consume the
    roles below, never the hexes, so the palette can be re-keyed from here.
@@ -18,55 +21,40 @@
 
 :root {
   /* ---- palette (raw stops — reference these only to build roles) ---- */
-  --c-lava: #e42217;
-  --c-lime: #a9ed3d;
-  --c-fresh: #34cd3f;
-  --c-bean: #081910;
-
-  /* ---- derived stops ---- */
-  /* Lava red lands at 4.1:1 on the canvas — fine for a display line, short of
-     AA for the micro-labels and links the accent actually carries. One step
-     down the same hue clears 5:1 without reading as a different red. */
-  --c-lava-ink: #c81e13;
-  /* Lemon lime at full strength is a highlighter, not a text colour; a long
-     paragraph set in it buzzes. Pulled back toward paper it keeps the hue and
-     still holds 13:1 on black bean. */
-  --c-lime-key: #c7e58c;
-  /* Black bean lifted toward fresh green: the inverted ground the page lands
-     on, dark enough for lime type, warm enough not to read as flat black. */
-  --c-forest: #0e2e1a;
-  /* A mid green between fresh and forest, for the one element that has to
-     hold a single value across both grounds — see the cursor note at the
-     bottom of this file. */
-  --c-moss: #2e8c3b;
+  --c-void: #000000;
+  --c-pink: #ff4ba7;
+  --c-electric: #2d19f8;
+  --c-acid: #fff70d;
+  --c-flame: #ff4937;
+  --c-bone: #fffef8;
 
   /* ---- surface ----
-     The canvas is lemon lime tinted far up toward paper. At full strength
-     #A9ED3D is a signal colour, not a page; held at this value it still reads
-     unmistakably green next to a white browser chrome. */
-  --bg: #ecf1de;
-  --bg-raise: #f4f7e9;
-  /* Forest is the inverted ground the page actually lands on; black bean is
-     held back for the preloader, so the entry opens at its darkest and lifts. */
-  --bg-invert: #0e2e1a;
-  --bg-invert-deep: #081910;
-  --paper: #fbfdf4;
+     The page ground is void; the bright stops arrive as whole sections
+     rather than as a tint of the canvas. --bg-raise is barely off black —
+     enough to seat a card on the page without turning into a grey. */
+  --bg: #000000;
+  --bg-raise: #0e0e0e;
+  /* The default block colour for the full-bleed sections; each one picks its
+     own below. --bg-invert-deep stays void for the preloader, so the entry
+     opens on the same ground the hero lands on. */
+  --bg-invert: #ff4ba7;
+  --bg-invert-deep: #000000;
+  --paper: #fffef8;
 
-  /* ---- ink ---- */
-  --ink: #081910;
-  --ink-70: rgba(8, 25, 16, 0.7);
-  --ink-45: rgba(8, 25, 16, 0.45);
-  --ink-25: rgba(8, 25, 16, 0.25);
-  --ink-12: rgba(8, 25, 16, 0.12);
-  --ink-on-invert: #c7e58c;
+  /* ---- ink — bone on void, 20.4:1 ---- */
+  --ink: #fffef8;
+  --ink-70: rgba(255, 254, 248, 0.7);
+  --ink-45: rgba(255, 254, 248, 0.45);
+  --ink-25: rgba(255, 254, 248, 0.25);
+  --ink-12: rgba(255, 254, 248, 0.12);
+  --ink-on-invert: #000000;
 
   /* ---- accent ----
-     `--accent` is tuned for the light canvas (5.0:1 on --bg). Inverted blocks
-     rebind it to fresh green below, so a component using var(--accent) stays
-     legible wherever it is dropped. */
-  --accent: #c81e13;
-  --accent-soft: #34cd3f;
-  --accent-12: rgba(200, 30, 19, 0.12);
+     Acid on void is 18.6:1, the brightest thing on the page. Every bright
+     block rebinds it, because acid clears AA on only two of the six grounds. */
+  --accent: #fff70d;
+  --accent-soft: #ff4ba7;
+  --accent-12: rgba(255, 247, 13, 0.12);
 
   /* ---- type ---- */
   --font: 'Inter Tight', 'Inter Tight Fallback', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -157,30 +145,102 @@
   }
 }
 
-/* ---- inverted grounds -----------------------------------------------------
-   Everything that flips to a dark ground rebinds the accent in one place.
-   Lava red is built for the light canvas and goes flat on forest (3.2:1);
-   fresh green clears 7:1 there while staying clearly quieter than the lime
-   type it sits beside, so a component written against var(--accent) survives
-   being dropped either way.
+/* ---- section grounds ------------------------------------------------------
+   The page runs void → electric → void → pink → acid → flame → void. Each
+   block rebinds ink and accent together; the pairs below are the only ones in
+   this palette that clear AA, so treat them as fixed sets rather than colours
+   to mix and match. Ratios given as body ink / accent, both against the
+   block's own ground.
    -------------------------------------------------------------------------- */
 
-.pl,
-.nav-overlay,
-.next,
-.footer,
-.work-band,
-.work-stack .work-panel__media {
-  --accent: var(--c-fresh);
-  --accent-12: rgba(52, 205, 63, 0.16);
+/* Electric is dark enough to keep the page's own ink — 8.0:1 / 7.1:1. */
+.about,
+.nav-overlay {
+  --bg: var(--c-electric);
+  --bg-invert: var(--c-electric);
+  /* The ink ladder is not the page's. Fading ink toward a saturated ground
+     loses contrast far faster than fading it toward black: bone at 45% is
+     4.4:1 over void but only 2.5:1 over electric, so every step is lifted
+     until the secondary text is back at 4.4:1 and the hairlines still read. */
+  --ink-70: rgba(255, 254, 248, 0.85);
+  --ink-45: rgba(255, 254, 248, 0.7);
+  --ink-25: rgba(255, 254, 248, 0.5);
+  --ink-12: rgba(255, 254, 248, 0.3);
+  --accent: var(--c-acid);
+  --accent-12: rgba(255, 247, 13, 0.16);
+  background: var(--c-electric);
 }
 
-/* The custom cursor is fixed to the viewport, so it crosses light and dark
-   grounds without ever being a child of either — it can't inherit the rebind
-   above and has to hold one value that works over both. Neither green in the
-   palette does that (fresh green is 1.9:1 on the canvas, lime worse), so the
-   ring takes a mid green sitting between them: 3.8:1 on paper, 3.4:1 on the
-   inverted bands. */
+/* Pink and flame are both too light for bone and too dark for acid, so they
+   flip to void ink — 6.8:1 and 6.3:1. Their accent is void as well; on these
+   two blocks emphasis is carried by weight and rule, not by hue. */
+.work-band,
+.contact {
+  --bg: var(--c-pink);
+  --bg-invert: var(--c-pink);
+  --ink: var(--c-void);
+  /* Lifted for the same reason as the electric block above — black at 50%
+     over pink is 2.9:1, and these two grounds are the brightest on the page. */
+  --ink-70: rgba(0, 0, 0, 0.8);
+  --ink-45: rgba(0, 0, 0, 0.62);
+  --ink-25: rgba(0, 0, 0, 0.4);
+  --ink-12: rgba(0, 0, 0, 0.22);
+  --ink-on-invert: var(--c-void);
+  --accent: var(--c-void);
+  --accent-12: rgba(0, 0, 0, 0.14);
+  /* A block that flips its ink has to apply it too: everything inside these
+     sections that inherits `color` rather than naming var(--ink) would
+     otherwise keep the page's bone and sit at 3.3:1 on flame. */
+  color: var(--ink);
+}
+
+.contact {
+  --bg: var(--c-flame);
+  --bg-invert: var(--c-flame);
+}
+
+/* Acid takes void ink at 18.6:1 and, uniquely, holds a second hue: electric
+   clears 7.1:1 on it, so this is the one block whose accent is a colour. */
+.next {
+  --bg: var(--c-acid);
+  --bg-invert: var(--c-acid);
+  --ink: var(--c-void);
+  --ink-70: rgba(0, 0, 0, 0.72);
+  --ink-45: rgba(0, 0, 0, 0.5);
+  --ink-25: rgba(0, 0, 0, 0.32);
+  --ink-12: rgba(0, 0, 0, 0.16);
+  --ink-on-invert: var(--c-void);
+  --accent: var(--c-electric);
+  --accent-12: rgba(45, 25, 248, 0.16);
+  color: var(--ink);
+}
+
+/* Back to void for the close. The footer and the preloader bracket the page
+   in the ground it opens and ends on; pink at 6.8:1 marks the footer's links,
+   acid at 18.6:1 the preloader's count. */
+.footer {
+  --bg-invert: var(--c-void);
+  --ink-on-invert: var(--c-bone);
+  --accent: var(--c-pink);
+  --accent-12: rgba(255, 75, 167, 0.18);
+}
+
+.pl {
+  --ink-on-invert: var(--c-acid);
+  --accent: var(--c-acid);
+}
+
+/* The work section keeps the page ground, and takes pink so the run of black
+   between electric and the band is not left without a colour — 6.8:1. */
+.work {
+  --accent: var(--c-pink);
+  --accent-12: rgba(255, 75, 167, 0.18);
+}
+
+/* The custom cursor is fixed to the viewport, so it crosses every one of
+   these grounds without being a child of any — it can't inherit a rebind, and
+   no single hue clears 3:1 on all six. It stays inverted against whatever is
+   under it instead, which is legible everywhere by construction. */
 .cursor {
-  --accent: var(--c-moss);
+  --accent: var(--c-bone);
 }

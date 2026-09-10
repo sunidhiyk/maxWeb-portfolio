@@ -85,9 +85,12 @@ ol {
   list-style: none;
 }
 
+/* --accent changes with every block, and half those values are unreadable
+   against --paper. Selection pins the one pair that holds anywhere: acid
+   ground, void type, 18.6:1. */
 ::selection {
-  background: var(--accent);
-  color: var(--paper);
+  background: var(--c-acid);
+  color: var(--c-void);
 }
 
 :focus-visible {

@@ -70,8 +70,8 @@ export default function About() {
 
     // GSAP can't tween a var(), so the literals are read off the cascade once.
     const cs = getComputedStyle(el);
-    const ink = cs.getPropertyValue('--ink').trim() || '#081910';
-    const accent = cs.getPropertyValue('--accent').trim() || '#c81e13';
+    const ink = cs.getPropertyValue('--ink').trim() || '#fffef8';
+    const accent = cs.getPropertyValue('--accent').trim() || '#fff70d';
     const litColor = (i, target) =>
       target.hasAttribute('data-accent') ? accent : ink;
 

@@ -382,9 +382,12 @@ body.has-custom-cursor * {
   will-change: transform;
 }
 
+/* The ring keeps the difference blend when active as well. Dropping it to a
+   flat accent was fine over one canvas and one dark ground; across six
+   saturated blocks there is no single colour that stays visible, and the
+   inversion is legible on all of them by construction. */
 .cursor-ring.is-active {
   border-color: var(--accent);
-  mix-blend-mode: normal;
 }
 
 .cursor-label {

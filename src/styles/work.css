@@ -55,6 +55,32 @@
   background: var(--bg-raise);
 }
 
+/* The media well is only visible around the image — while it loads, and in
+   the sliver the 4:3 crop leaves. Rotating the four block hues through the
+   cards keeps that sliver part of the palette instead of a grey, and gives
+   the run of black between the electric and pink blocks some colour. The
+   pinned track holds the panels directly; the mobile stack wraps each one in
+   a Reveal, so the count has to be taken on the wrapper there. */
+.work-track .work-panel:nth-child(4n + 1) .work-panel__media,
+.work-stack__item:nth-child(4n + 1) .work-panel__media {
+  background: var(--c-pink);
+}
+
+.work-track .work-panel:nth-child(4n + 2) .work-panel__media,
+.work-stack__item:nth-child(4n + 2) .work-panel__media {
+  background: var(--c-electric);
+}
+
+.work-track .work-panel:nth-child(4n + 3) .work-panel__media,
+.work-stack__item:nth-child(4n + 3) .work-panel__media {
+  background: var(--c-acid);
+}
+
+.work-track .work-panel:nth-child(4n + 4) .work-panel__media,
+.work-stack__item:nth-child(4n + 4) .work-panel__media {
+  background: var(--c-flame);
+}
+
 /* The inner shifter carries the horizontal parallax; the img itself carries
    the hover scale, so the two transforms never fight over one element. */
 .work-panel__shift {
