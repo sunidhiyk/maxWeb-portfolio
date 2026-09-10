@@ -1,0 +1,451 @@
+/* ==========================================================================
+   Contact — beat 1 (transitional statement) + beat 2 (the contact block)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Beat 1 — "TELL US WHAT'S NEXT."
+   Full-bleed inverted panel. Sits outside .u-shell so it runs to the window
+   edges; the inner wrapper restores the shell gutters.
+   -------------------------------------------------------------------------- */
+
+.next {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  overflow: hidden;
+  background: var(--bg-invert);
+  color: var(--ink-on-invert);
+}
+
+.next__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2.5rem, 8vh, 6rem);
+  padding-block: clamp(3.5rem, 9vh, 7rem);
+  text-align: center;
+}
+
+.next .u-micro {
+  color: var(--ink-on-invert);
+  opacity: 0.45;
+}
+
+.next__kicker,
+.next__prompt {
+  flex: 0 0 auto;
+}
+
+.next__title {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--fs-display);
+  font-weight: 700;
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
+  text-transform: uppercase;
+  color: var(--ink-on-invert);
+  will-change: transform;
+}
+
+/* the .split primitive is inline by default — these are full lines */
+.next__line {
+  display: block;
+}
+
+.next__prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+}
+
+.next__arrow {
+  display: inline-block;
+  font-size: 1.1em;
+  line-height: 1;
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   Beat 2 — the contact block
+   -------------------------------------------------------------------------- */
+
+.contact {
+  background: var(--bg);
+}
+
+.contact__lead {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  margin-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.contact__statement {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-snug);
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.contact__statement-line {
+  display: block;
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(3rem, 7vw, 7rem);
+  align-items: start;
+}
+
+.contact__col {
+  min-width: 0;
+}
+
+.contact__col-label {
+  padding-bottom: 1rem;
+  margin-bottom: clamp(1.75rem, 3vw, 2.75rem);
+  border-bottom: var(--rule);
+}
+
+/* ---- form ---- */
+
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+.field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.field__label {
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.field:focus-within .field__label {
+  color: var(--ink);
+}
+
+.field__input {
+  width: 100%;
+  display: block;
+  border: 0;
+  border-bottom: 1px solid var(--ink-25);
+  border-radius: 0;
+  background: transparent;
+  padding: 0.35rem 0 1.1rem;
+  font-family: var(--font);
+  font-size: var(--fs-lead);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--ink);
+  appearance: none;
+}
+
+.field__input--area {
+  resize: vertical;
+  min-height: 7.5rem;
+  line-height: var(--lh-body);
+}
+
+.field__input:focus {
+  outline: none;
+}
+
+.field__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* the focus rule: a 2px accent bar scaling in from the left */
+.field::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--dur) var(--ease-out);
+  pointer-events: none;
+}
+
+.field:focus-within::after {
+  transform: scaleX(1);
+}
+
+.contact__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.contact__submit {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 2px;
+  background: transparent;
+  padding: 1.15rem 2.5rem;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* the ink fill wipes up from the bottom edge */
+.contact__submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: bottom center;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.contact__submit > span {
+  position: relative;
+  z-index: 1;
+  transition: color var(--dur) var(--ease-out);
+}
+
+.contact__submit:hover:not(:disabled)::before,
+.contact__submit:focus-visible:not(:disabled)::before {
+  transform: scaleY(1);
+}
+
+.contact__submit:hover:not(:disabled) > span,
+.contact__submit:focus-visible:not(:disabled) > span {
+  color: var(--bg);
+}
+
+.contact__submit:disabled {
+  cursor: progress;
+  border-color: var(--ink-25);
+  color: var(--ink-45);
+}
+
+.contact__status {
+  min-height: 0;
+}
+
+.contact__error {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-70);
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+}
+
+.contact__error-link {
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink-25);
+}
+
+.contact__error-link:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* ---- success ---- */
+
+.contact__done {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding-block: clamp(1rem, 3vw, 2.5rem);
+}
+
+.contact__done-title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-snug);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.contact__done-copy {
+  max-width: 38ch;
+  color: var(--ink-70);
+}
+
+.contact__done-link {
+  display: inline-block;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--ink-25);
+  color: var(--ink);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.contact__done-link:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* ---- right column: direct details ---- */
+
+.contact__details {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding-block: 1.15rem;
+  border-top: var(--rule);
+}
+
+.detail:last-of-type {
+  border-bottom: var(--rule);
+}
+
+.detail__label {
+  padding-top: 0.2em;
+}
+
+.detail__value {
+  font-size: var(--fs-body);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* two-layer link hover: the label slides up, its duplicate slides in below */
+.swap {
+  display: inline-block;
+  overflow: hidden;
+  /* one line tall, so the duplicate below stays clipped until hover */
+  height: 1.4em;
+  line-height: 1.4;
+  vertical-align: bottom;
+  text-transform: none;
+}
+
+.swap__stack {
+  display: block;
+  transition: transform var(--dur) var(--ease-out);
+  will-change: transform;
+}
+
+.swap__line {
+  display: block;
+  line-height: 1.4;
+}
+
+.swap:hover .swap__stack,
+.swap:focus-visible .swap__stack {
+  transform: translateY(-50%);
+}
+
+.contact__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.contact__cta-link {
+  display: inline-block;
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: var(--track-display);
+  line-height: 1.1;
+  color: var(--ink);
+  word-break: break-word;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size var(--dur) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.contact__cta-link:hover,
+.contact__cta-link:focus-visible {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .contact__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(3.5rem, 10vw, 5rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .contact__lead {
+    max-width: none;
+  }
+
+  .detail {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .contact__submit {
+    width: 100%;
+    text-align: center;
+  }
+
+  .contact__actions .magnetic {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .contact__cta-link {
+    font-size: var(--fs-lead);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — everything sits in its final state
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .next__title,
+  .next__arrow,
+  .swap__stack,
+  .contact__submit::before,
+  .contact__cta-link,
+  .field::after {
+    transition: none;
+  }
+
+  .swap:hover .swap__stack,
+  .swap:focus-visible .swap__stack {
+    transform: none;
+  }
+}

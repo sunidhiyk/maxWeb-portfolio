@@ -1,0 +1,176 @@
+/* ==========================================================================
+   01 — About
+   Scroll-lit statement, capabilities index, stack ticker.
+   ========================================================================== */
+
+.about {
+  overflow: hidden; /* the parallax numeral bleeds past the left gutter */
+}
+
+/* ---- the scroll-lit statement -------------------------------------------- */
+
+.about-statement-wrap {
+  position: relative;
+  margin-bottom: clamp(5rem, 12vw, 10rem);
+}
+
+.about-statement {
+  position: relative;
+  z-index: var(--z-content);
+
+  /* sits between --fs-h3 and --fs-h2: statement scale, not heading scale */
+  font-size: clamp(1.35rem, 3.2vw, 3rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+
+  max-width: 20em;
+  /* editorial asymmetry: parked right of centre, not centred */
+  margin-left: auto;
+  margin-right: clamp(0rem, 7vw, 9rem);
+
+  color: var(--ink-25);
+}
+
+/* Words stay inline so the paragraph reads and selects as one block. */
+.about-word {
+  color: var(--ink-25);
+}
+
+/* Oversized numeral bleeding off the left edge, drifting on scroll. */
+.about-numeral {
+  position: absolute;
+  top: -0.18em;
+  left: calc(var(--gutter) * -1 - 3vw);
+  z-index: var(--z-canvas);
+
+  font-size: var(--fs-mega);
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: var(--track-mega);
+  color: var(--ink-12);
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---- capabilities index --------------------------------------------------- */
+
+.about-caps {
+  display: grid;
+  grid-template-columns: minmax(7rem, 16%) 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.about-caps-label {
+  padding-top: clamp(1.1rem, 2.4vw, 1.9rem);
+}
+
+.about-caps-list {
+  border-top: var(--rule);
+}
+
+.cap-row {
+  display: grid;
+  grid-template-columns: 5.5ch minmax(9rem, 24%) 1fr;
+  gap: clamp(0.85rem, 2vw, 2.5rem);
+  align-items: baseline;
+
+  padding-block: clamp(1.1rem, 2.4vw, 1.9rem);
+  padding-left: 0;
+  border-bottom: var(--rule);
+
+  /* Reveal writes an inline transform on these rows, so the hover indent
+     rides on padding instead of fighting it. */
+  transition: padding-left var(--dur-fast) var(--ease-out);
+}
+
+.cap-row:hover {
+  padding-left: 12px;
+}
+
+.cap-num {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--track-display);
+  color: var(--ink-25);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.cap-row:hover .cap-num {
+  color: var(--accent);
+}
+
+.cap-title {
+  font-size: var(--fs-lead);
+  font-weight: 600;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.cap-desc {
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--ink-45);
+  max-width: 46ch;
+}
+
+/* ---- stack ticker --------------------------------------------------------- */
+
+.about-ticker {
+  margin-top: clamp(4rem, 10vw, 8rem);
+  padding-block: clamp(1.1rem, 2.2vw, 1.75rem);
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+}
+
+.about-tick {
+  padding-inline: clamp(0.9rem, 2vw, 1.75rem);
+  color: var(--ink-70);
+  white-space: nowrap;
+}
+
+.about-tick-sep {
+  color: var(--accent);
+}
+
+/* ---- mobile --------------------------------------------------------------- */
+
+@media (max-width: 760px) {
+  .about-statement {
+    font-size: var(--fs-h3);
+    max-width: none;
+    margin-right: 0;
+  }
+
+  .about-numeral {
+    display: none;
+  }
+
+  .about-caps {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .about-caps-label {
+    padding-top: 0;
+  }
+
+  .cap-row {
+    grid-template-columns: 5.5ch 1fr;
+    row-gap: 0.5rem;
+  }
+
+  .cap-desc {
+    grid-column: 2;
+  }
+
+  .cap-row:hover {
+    padding-left: 0; /* no hover state worth paying for on touch */
+  }
+}

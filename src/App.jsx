@@ -1,35 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import Layout from './components/Layout';
-import Hero from './components/Hero';
-import About from './components/About';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import Loader from './components/Loader';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSmoothScroll } from './lib/useSmoothScroll';
+import { ScrollTrigger } from './lib/gsap';
 
-function App() {
-  const [loading, setLoading] = useState(true);
+import Preloader from './components/chrome/Preloader';
+import Nav from './components/chrome/Nav';
+import Cursor from './components/chrome/Cursor';
+import Footer from './components/chrome/Footer';
 
+import Hero from './components/sections/Hero';
+import About from './components/sections/About';
+import Work from './components/sections/Work';
+import Contact from './components/sections/Contact';
+
+export default function App() {
+  const [ready, setReady] = useState(false);
+
+  // Page is frozen behind the preloader so nothing scrolls mid-intro.
   useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2200); // 2.2s total (1.5s draw + pause)
+    document.body.classList.toggle('is-locked', !ready);
+  }, [ready]);
 
-    return () => clearTimeout(timer);
-  }, []);
+  // Sections mount at their real height only once the intro is done.
+  useEffect(() => {
+    if (!ready) return undefined;
+    const id = window.setTimeout(() => ScrollTrigger.refresh(), 240);
+    return () => window.clearTimeout(id);
+  }, [ready]);
 
-  if (loading) {
-    return <Loader />;
-  }
+  // Safety net: nothing about the intro is essential, so never let a stalled
+  // or errored preloader leave the page locked and unscrollable.
+  useEffect(() => {
+    if (ready) return undefined;
+    const id = window.setTimeout(() => setReady(true), 6000);
+    return () => window.clearTimeout(id);
+  }, [ready]);
+
+  useSmoothScroll(ready);
+
+  const handleIntroDone = useCallback(() => setReady(true), []);
 
   return (
-    <Layout>
-      <Hero />
-      <About />
-      <Projects />
-      <Contact />
-    </Layout>
+    <>
+      <Preloader onComplete={handleIntroDone} />
+      <Cursor />
+      <Nav ready={ready} />
+
+      <main id="top">
+        <Hero ready={ready} />
+        <About />
+        <Work />
+        <Contact />
+      </main>
+
+      <Footer />
+    </>
   );
 }
-
-export default App;

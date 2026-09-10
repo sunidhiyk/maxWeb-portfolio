@@ -1,0 +1,41 @@
+/* ---- shared motion primitive styles ---- */
+
+.split {
+  display: inline;
+}
+
+.split-w {
+  display: inline-flex;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.split-i {
+  display: inline-block;
+  will-change: transform;
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.magnetic {
+  display: inline-block;
+  will-change: transform;
+}

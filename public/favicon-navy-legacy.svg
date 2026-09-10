@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Hexagon shape -->
+  <polygon
+    points="32,2 58,17 58,47 32,62 6,47 6,17"
+    fill="#0a192f"
+    stroke="#64ffda"
+    stroke-width="3"
+  />
+  <!-- mW text centered inside hexagon -->
+  <text
+    x="32"
+    y="39"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="22"
+    font-weight="700"
+    fill="#64ffda"
+    text-anchor="middle"
+    letter-spacing="-0.5"
+  >mW</text>
+</svg>

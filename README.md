@@ -1,16 +1,66 @@
-# React + Vite
+# maxWeb — studio portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The site for **maxWeb**, a digital studio building fast, considered websites and products.
 
-Currently, two official plugins are available:
+Light-editorial visual system: off-white canvas, near-black ink, violet accent, oversized
+Inter Tight display type — carried by smooth scrolling, scroll-linked animation and a WebGL hero.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## React Compiler
+| | |
+| --- | --- |
+| Framework | React 19 + Vite 7 |
+| Styling | Plain CSS, custom-property design tokens |
+| Motion | GSAP 3 + ScrollTrigger |
+| Smooth scroll | Lenis, driven off the GSAP ticker |
+| 3D | three.js + React Three Fiber + drei |
+| Forms | Formspree |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # production build to dist/
+npm run preview  # serve the production build
+npm run lint
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+> React is pinned to `19.2.3`. React Three Fiber 9 declares a peer range of `>=19 <19.3`, so an
+> unpinned `^19.2.0` resolves to 19.3 and breaks installation.
+
+## Project layout
+
+```
+src/
+  App.jsx                  page composition + intro gating
+  lib/
+    gsap.js                GSAP + ScrollTrigger registration, shared easings
+    useSmoothScroll.js     Lenis instance bound to the GSAP ticker
+    useIsMobile.js         media-query hooks (breakpoint, reduced motion)
+  components/
+    motion/                shared animation primitives
+      SplitText.jsx        masked per-word/char type reveal
+      Reveal.jsx           fade + rise for blocks
+      Parallax.jsx         scroll-linked drift
+      Marquee.jsx          velocity-reactive infinite ticker
+      Magnetic.jsx         cursor-attracted controls
+    chrome/                preloader, nav, custom cursor, footer
+    sections/              hero, about, work, contact
+    three/                 WebGL hero scene
+  data/projects.js         selected work
+  styles/
+    tokens.css             the design system — colour, type scale, motion
+    base.css               reset + global rules, imports every other sheet
+    <section>.css          one stylesheet per section
+```
+
+## Conventions
+
+- **Never hardcode a colour or size** — everything comes from `tokens.css`.
+- **Every GSAP animation** lives inside `gsap.context()` in a `useLayoutEffect` and is reverted on
+  cleanup. React StrictMode double-mounts in development; anything else leaks ScrollTriggers.
+- **`prefers-reduced-motion` is honoured everywhere** — reduced-motion users get the final composed
+  state with no scrubbing, looping or autoplay.
+- Anchor navigation goes through Lenis (`useSmoothScroll` intercepts `a[href^="#"]`), because native
+  smooth scrolling fights the virtual scroller.
