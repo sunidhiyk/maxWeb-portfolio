@@ -94,8 +94,17 @@
   height: 100%;
 }
 
+/* react-three-fiber sizes the canvas from a ResizeObserver, so between mount
+   and the observer's first callback the element sits at its intrinsic 300x150
+   — left-aligned in a full-width container, which put the knot off-centre for
+   the first frames after every reload. Stretching it here means the element is
+   always centred on its container; only the drawing buffer catches up late,
+   and that costs one soft frame instead of a visible jump. `!important` is
+   load-bearing: `setSize` writes pixel widths straight onto the style attribute. */
 .hero-canvas canvas {
   display: block;
+  width: 100% !important;
+  height: 100% !important;
   outline: none;
 }
 

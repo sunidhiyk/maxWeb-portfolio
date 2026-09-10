@@ -7,12 +7,11 @@ import React, {
   useState,
 } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { Environment, Lightformer } from '@react-three/drei';
 import ChromeKnot from './ChromeKnot';
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/gsap';
 import { useIsMobile } from '../../lib/useIsMobile';
 
-/** Keeps a broken WebGL context (or a failed HDRI fetch) from taking the page down. */
+/** Keeps a broken WebGL context (or a shader that fails to compile) from taking the page down. */
 class SafeBoundary extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +43,8 @@ function detectWebGL() {
 
 /**
  * In `demand` mode (reduced motion) nothing schedules frames, so the scene would
- * stay blank until the studio HDRI resolves. Nudge it for a short while, then stop.
+ * stay blank until something asks for one. Nudge it for a short while, then stop —
+ * long enough to cover the canvas being sized and the backdrop being painted.
  */
 function DemandNudge({ active }) {
   const invalidate = useThree((s) => s.invalidate);
@@ -133,30 +133,6 @@ export default function HeroCanvas() {
           eventSource={typeof document !== 'undefined' ? document.documentElement : undefined}
           eventPrefix="client"
         >
-          <ambientLight intensity={0.35} />
-          <directionalLight position={[4, 5, 5]} intensity={2.4} />
-          <directionalLight position={[-5, -2, 3]} intensity={1.1} />
-
-          {/* The environment is built in-scene from emissive planes rather than
-              loaded from a preset HDRI. drei's presets fetch from a third-party
-              CDN, which suspends this whole subtree until the network answers —
-              and leaves the hero empty if it never does. Rendering the rig
-              locally removes that dependency and gives direct control over the
-              reflections: bright bars against a dark surround are what read as
-              polished chrome on the mesh. */}
-          <Environment resolution={256} frames={1}>
-            <color attach="background" args={['#0a0a0a']} />
-            {/* broad key from above — the soft white sweep across the top */}
-            <Lightformer form="rect" intensity={5} color="#ffffff" scale={[12, 4]} position={[0, 5, -6]} target={[0, 0, 0]} />
-            {/* hard specular strips — these become the bright highlight bands */}
-            <Lightformer form="rect" intensity={9} color="#ffffff" scale={[1.2, 9]} position={[-5, 1, -2]} target={[0, 0, 0]} />
-            <Lightformer form="rect" intensity={7} color="#ffffff" scale={[1.2, 9]} position={[5, -1, -2]} target={[0, 0, 0]} />
-            {/* faint accent bounce, so the chrome picks up a trace of brand violet */}
-            <Lightformer form="circle" intensity={3} color="#7671ff" scale={[4, 4]} position={[3, 4, 3]} target={[0, 0, 0]} />
-            {/* rim from behind to separate the silhouette from the page */}
-            <Lightformer form="rect" intensity={4} color="#ffffff" scale={[8, 2]} position={[0, -4, 4]} target={[0, 0, 0]} />
-          </Environment>
-
           <Suspense fallback={null}>
             <ChromeKnot
               scale={mobile ? 0.34 : 0.46}
