@@ -14,7 +14,7 @@ const EMPTY = { name: '', email: '', message: '' };
 
 const DETAILS = [
   { label: 'Availability', value: 'Taking on work for Q2 2026' },
-  { label: 'Location', value: 'Silchar, India — working worldwide' },
+  { label: 'Location', value: 'India — working worldwide' },
   { label: 'Response', value: 'Within two working days' },
 ];
 

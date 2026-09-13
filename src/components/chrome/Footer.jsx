@@ -5,9 +5,7 @@ import Reveal from '../motion/Reveal';
 const EMAIL = 'maxweb596@gmail.com';
 
 const SOCIAL = [
-  { label: 'GitHub', href: '#' },
-  { label: 'LinkedIn', href: '#' },
-  { label: 'Instagram', href: '#' },
+  { label: 'GitHub', href: 'https://github.com/maxweb596' },
 ];
 
 const INDEX = [
@@ -98,7 +96,11 @@ export default function Footer() {
           <ul className="footer-col-list">
             {SOCIAL.map((s) => (
               <li key={s.label}>
-                <a className="footer-link" href={s.href}>
+                <a
+                  className="footer-link"
+                  href={s.href}
+                  {...(s.href.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}
+                >
                   {s.label}
                 </a>
               </li>
